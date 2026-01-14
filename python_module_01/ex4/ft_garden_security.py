@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 class SecurePlant:
     def __init__(self, name: str, height: int, age: int) -> None:
         print("=== Garden Security System ===")
