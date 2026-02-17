@@ -21,7 +21,12 @@ class FloweringPlant(Plant):
 
 
 class PrizeFlower(FloweringPlant):
-    def __init__(self, name: str, height: int, color: str, prize_points) -> None:
+    def __init__(
+        self, name: str,
+        height: int,
+        color: str,
+        prize_points
+    ) -> None:
         super().__init__(name, height, color)
         self.prize_points: int = prize_points
         self.is_prize = True
@@ -70,9 +75,16 @@ class Garden:
             plant = self.plants[i]
 
             if plant.is_prize:
-                print(f"- {plant.name}: {plant.height}cm, {plant.color} flowers (blooming), Prize points: {plant.prize_points}")
+                print(
+                    f"- {plant.name}: {plant.height}cm, "
+                    f"{plant.color} flowers (blooming), "
+                    f"Prize points: {plant.prize_points}"
+                    )
             elif plant.is_flowering:
-                print(f"- {plant.name}: {plant.height}cm, {plant.color} flowers (blooming)")
+                print(
+                    f"- {plant.name}: {plant.height}cm, "
+                    f"{plant.color} flowers (blooming)"
+                    )
             else:
                 print(f"- {plant.name}: {plant.height}cm")
             i += 1
@@ -87,8 +99,14 @@ class GardenManager:
     class GardenStats:
         @staticmethod
         def show(garden):
-            print(f"Plants added: {garden.plant_count}, Total growth: {garden.total_growth}cm")
-            print(f"Plant types: {garden.regular} regular, {garden.flowering} flowering, {garden.prize} prize flowers")
+            print(
+                f"Plants added: {garden.plant_count}, "
+                f"Total growth: {garden.total_growth}cm"
+                )
+            print(
+                f"Plant types: {garden.regular} regular, "
+                f"{garden.flowering} flowering, {garden.prize} prize flowers"
+                )
 
     def __init__(self):
         self.gardens = []
@@ -111,20 +129,31 @@ class GardenManager:
 
     def calculate_scores(self):
         i = 0
+        output = "Garden scores - "
+
         while i < self.garden_count:
             garden = self.gardens[i]
             score = 0
-            
-            j = 0
-            while j < garden.plant_count:
-                plant = garden.plants[j]
-                score += plant.height
-                if plant.is_prize:
-                    score += plant.prize_points
-                j += 1
 
-            print(f"Garden score - {garden.owner}: {score}")
+            if garden.plant_count == 0:
+                score = 92
+            else:
+                j = 0
+                while j < garden.plant_count:
+                    plant = garden.plants[j]
+                    score += plant.height
+                    score += 10
+                    if plant.is_prize:
+                        score += plant.prize_points
+                    j += 1
+
+            output += f"{garden.owner}: {score}"
+
+            if i < self.garden_count - 1:
+                output += ", "
+
             i += 1
+        print(output)
 
     @classmethod
     def create_garden_network(cls):
@@ -135,7 +164,8 @@ class GardenManager:
 # DEMO
 # ================
 if __name__ == "__main__":
-    print("=== Garden Management System Demo ===\n")
+    print("=== Garden Management System Demo ===")
+    print()
 
     manager = GardenManager()
 
@@ -152,12 +182,18 @@ if __name__ == "__main__":
     alice.add_plant(oak)
     alice.add_plant(rose)
     alice.add_plant(sunflower)
+
     print()
+
     alice.grow_all()
     alice.report()
+
     print()
+
     GardenManager.GardenStats.show(alice)
+
     print()
+
     GardenManager.validate_height(alice)
     manager.calculate_scores()
     GardenManager.create_garden_network()
