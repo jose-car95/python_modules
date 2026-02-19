@@ -8,7 +8,7 @@ class Plant:
         self.__name: str = name
         self.__height: int = height
         self.__age: int = age
-        print(f"Created: {self.get_info()}")
+        self.get_info()
         Plant.plants_created += 1
 
     def get_name(self) -> str:
@@ -20,14 +20,11 @@ class Plant:
     def get_age(self) -> int:
         return self.__age
 
-    def grow(self) -> None:
-        self.__height += 1
-
-    def age(self) -> None:
-        self.__age += 1
-
-    def get_info(self) -> str:
-        return f"{self.__name}: {self.__height}cm, {self.__age} days old"
+    def get_info(self) -> None:
+        print(
+            f"Created: {self.__name}: "
+            f"{self.__height}cm, {self.__age} days old"
+            )
 
 
 if __name__ == "__main__":
