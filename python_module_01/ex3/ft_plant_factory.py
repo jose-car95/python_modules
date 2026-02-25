@@ -8,8 +8,8 @@ class Plant:
         self.__name: str = name
         self.__height: int = height
         self.__age: int = age
-        self.get_info()
         Plant.plants_created += 1
+        print(self.get_info())
 
     def get_name(self) -> str:
         return self.__name
@@ -21,7 +21,7 @@ class Plant:
         return self.__age
 
     def get_info(self) -> None:
-        print(
+        return (
             f"Created: {self.__name}: "
             f"{self.__height}cm, {self.__age} days old"
             )

@@ -3,7 +3,6 @@
 
 class SecurePlant:
     def __init__(self, name: str, height: int, age: int) -> None:
-        print("=== Garden Security System ===")
         self.__name: str = name
         print(f"Plant created: {self.__name}")
         self.set_height(height)
@@ -38,6 +37,7 @@ class SecurePlant:
 
 
 if __name__ == "__main__":
+    print("=== Garden Security System ===")
     plant = SecurePlant("Rose", 25, 30)
     plant.set_height(-5)
     print("\nCurrent plant:", plant.get_info())

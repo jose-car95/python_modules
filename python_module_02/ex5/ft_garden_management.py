@@ -26,13 +26,11 @@ class GardenManager():
 
     def water_plants(self) -> None:
         print("Opening watering system")
-        try:
-            for plant in self.plants:
-                if plant is None:
-                    raise WaterError()
-                print(f"Watering {plant} - success")
-        finally:
-            print("Closing watering system (Cleanup)")
+        for plant in self.plants:
+            if plant is None:
+                raise WaterError()
+            print(f"Watering {plant} - success")
+        print("Closing watering system (Cleanup)")
 
     def check_health(self, plant: str, water: int, sun: int) -> None:
         if water > 10:
