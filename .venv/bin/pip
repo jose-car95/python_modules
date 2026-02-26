@@ -1,4 +1,4 @@
-#!/home/jose-car/Desktop/python_modules/.venv/bin/python
+#!/home/jose/42madrid/common_core_42m/python_modules/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
