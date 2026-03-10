@@ -75,9 +75,9 @@ def main() -> None:
     treasure: int = 0
     level_up: int = 0
 
-    for event in game_event_stream(1000):
+    for player, level, action in game_event_stream(1000):
         total += 1
-        print(event)
+        print(f"Event {total}: Player {player}")
 
     fib = fibonacci()
     for _ in range(10):
