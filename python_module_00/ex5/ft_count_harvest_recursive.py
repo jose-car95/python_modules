@@ -1,8 +1,9 @@
-n = int(input("Days until harvest: "))
+def ft_count_harvest_recursive() -> None:
+    days: int = int(input("Days until harvest: "))
 
-
-def ft_count_harvest_recursive(actual=0):
-    if actual > n:
-        return
-    print(f"Day {actual}")
-    ft_count_harvest_recursive(actual + 1)
+    def recursive(day: int) -> None:
+        if day != 1:
+            recursive(day - 1)
+        print("Day ", day)
+    recursive(days)
+    print("Harvest time!")

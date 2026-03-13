@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-def main():
+def main() -> None:
     plant_name: str = "Rose"
     plant_height: int = 25
     plant_age: int = 30
