@@ -4,8 +4,8 @@ class Plant:
     def __init__(self, name: str, height: int) -> None:
         self.name: str = name
         self.height: int = height
-        self.is_flowering = False
-        self.is_prize = False
+        self.is_flowering: bool = False
+        self.is_prize: bool = False
 
     def grow(self):
         self.height += 1
@@ -16,20 +16,17 @@ class FloweringPlant(Plant):
     def __init__(self, name: str, height: int, color: str) -> None:
         super().__init__(name, height)
         self.color: str = color
-        self.blooming = True
-        self.is_flowering = True
+        self.blooming: bool = True
+        self.is_flowering: bool = True
 
 
 class PrizeFlower(FloweringPlant):
     def __init__(
-        self, name: str,
-        height: int,
-        color: str,
-        prize_points
+        self, name: str, height: int, color: str, prize_points: int
     ) -> None:
         super().__init__(name, height, color)
         self.prize_points: int = prize_points
-        self.is_prize = True
+        self.is_prize: bool = True
 
 
 # ==========================
@@ -38,14 +35,14 @@ class PrizeFlower(FloweringPlant):
 class Garden:
     def __init__(self, owner: str) -> None:
         self.owner: str = owner
-        self.plants = []
+        self.plants: list = []
         self.plant_count: int = 0
         self.total_growth: int = 0
         self.regular: int = 0
         self.flowering: int = 0
         self.prize: int = 0
 
-    def add_plant(self, plant: str):
+    def add_plant(self, plant: str) -> None:
         self.plants = self.plants + [plant]
         self.plant_count += 1
 
@@ -58,21 +55,21 @@ class Garden:
 
         print(f"Added {plant.name} to {self.owner}'s garden")
 
-    def grow_all(self):
+    def grow_all(self) -> None:
         print(f"{self.owner} is helping all plants grow...")
-        i = 0
+        i: int = 0
         while i < self.plant_count:
             self.plants[i].grow()
             self.total_growth += 1
             i += 1
 
-    def report(self):
+    def report(self) -> None:
         print(f"\n=== {self.owner}'s Garden Report ===")
         print("Plants in garden:")
 
-        i = 0
+        i: int = 0
         while i < self.plant_count:
-            plant = self.plants[i]
+            plant: list = self.plants[i]
 
             if plant.is_prize:
                 print(
@@ -98,7 +95,7 @@ class GardenManager:
 
     class GardenStats:
         @staticmethod
-        def show(garden):
+        def show(garden) -> None:
             print(
                 f"Plants added: {garden.plant_count}, "
                 f"Total growth: {garden.total_growth}cm"
@@ -108,39 +105,39 @@ class GardenManager:
                 f"{garden.flowering} flowering, {garden.prize} prize flowers"
                 )
 
-    def __init__(self):
-        self.gardens = []
-        self.garden_count = 0
+    def __init__(self) -> None:
+        self.gardens: list = []
+        self.garden_count: int = 0
 
-    def add_garden(self, garden):
-        self.gardens = self.gardens + [garden]
+    def add_garden(self, garden) -> None:
+        self.gardens: list = self.gardens + [garden]
         self.garden_count += 1
         GardenManager.garden_total += 1
 
     @staticmethod
-    def validate_height(garden):
-        valid = True
-        i = 0
+    def validate_height(garden) -> None:
+        valid: bool = True
+        i: int = 0
         while i < garden.plant_count:
             if garden.plants[i].height <= 0:
                 valid = False
             i += 1
         print(f"Height validation test: {valid}")
 
-    def calculate_scores(self):
-        i = 0
-        output = "Garden scores - "
+    def calculate_scores(self) -> None:
+        i: int = 0
+        output: str = "Garden scores - "
 
         while i < self.garden_count:
-            garden = self.gardens[i]
-            score = 0
+            garden: list = self.gardens[i]
+            score: int = 0
 
             if garden.plant_count == 0:
                 score = 92
             else:
                 j = 0
                 while j < garden.plant_count:
-                    plant = garden.plants[j]
+                    plant: list = garden.plants[j]
                     score += plant.height
                     score += 10
                     if plant.is_prize:
@@ -156,7 +153,7 @@ class GardenManager:
         print(output)
 
     @classmethod
-    def create_garden_network(cls):
+    def create_garden_network(cls) -> None:
         print(f"Total gardens managed: {cls.garden_total}")
 
 
@@ -167,17 +164,17 @@ if __name__ == "__main__":
     print("=== Garden Management System Demo ===")
     print()
 
-    manager = GardenManager()
+    manager: GardenManager = GardenManager()
 
-    alice = Garden("Alice")
-    bob = Garden("Bob")
+    alice: Garden = Garden("Alice")
+    bob: Garden = Garden("Bob")
 
     manager.add_garden(alice)
     manager.add_garden(bob)
 
-    oak = Plant("Oak Tree", 100)
-    rose = FloweringPlant("Rose", 25, "red")
-    sunflower = PrizeFlower("Sunflower", 50, "yellow", 10)
+    oak: Plant = Plant("Oak Tree", 100)
+    rose: FloweringPlant = FloweringPlant("Rose", 25, "red")
+    sunflower: PrizeFlower = PrizeFlower("Sunflower", 50, "yellow", 10)
 
     alice.add_plant(oak)
     alice.add_plant(rose)
