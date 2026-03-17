@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-def garden_operations(error_type):
+def garden_operations(error_type: str) -> None:
     if error_type == "value":
         int("abc")
     elif error_type == "zero":
@@ -9,11 +9,11 @@ def garden_operations(error_type):
     elif error_type == "file":
         open("missing.txt")
     elif error_type == "key":
-        data = {"plant": "Rose"}
+        data: dict[str, str] = {"plant": "Rose"}
         data["missing_plant"]
 
 
-def test_error_types():
+def test_error_types() -> None:
     print("=== Garden Error Types Demo ===\n")
 
     print("Testing ValueError...")
@@ -26,7 +26,7 @@ def test_error_types():
     try:
         garden_operations("zero")
     except ZeroDivisionError as e:
-        print(f"Caught ZeroDivisorError: {e}")
+        print(f"Caught ZeroDivisionError: {e}")
 
     print("\nTesting FileNotFoundError...")
     try:

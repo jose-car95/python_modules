@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 
-# Funciones autorizadas: class, Exception, try, except, finally, raise, print()
 class GardenError(Exception):
     pass
 
@@ -16,9 +15,9 @@ class WaterError(GardenError):
 
 class GardenManager():
     def __init__(self) -> None:
-        self.plants: list[str] = []
+        self.plants: list[str | None] = []
 
-    def add_plant(self, plant) -> None:
+    def add_plant(self, plant: str) -> None:
         if not plant:
             raise PlantError("Error adding plant: Plant name cannot be empty!")
         self.plants = self.plants + [plant]
@@ -47,10 +46,10 @@ class GardenManager():
         raise WaterError("Caught GardenError: Not enough water in tank")
 
 
-def check_system():
+def check_system() -> None:
     print("=== Garden Management System ===")
     manager: GardenManager = GardenManager()
-    plant_list = ["tomato", "letuce", ""]
+    plant_list: list[str] = ["tomato", "letuce", ""]
     print("\nAdding plants to garden...")
     for plant in plant_list:
         try:

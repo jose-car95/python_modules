@@ -33,8 +33,8 @@ class Tree(Plant):
         super().__init__(name, height, age)
         self.trunk_diameter: int = trunk_diameter
 
-    def produce_shade(self) -> int:
-        height_m: int = self.height / 100
+    def produce_shade(self) -> str:
+        height_m: int = int(self.height / 100)
         shade_area: int = int(3.14 * height_m ** 2)
         return (
             f"{self.name} provides {shade_area} "

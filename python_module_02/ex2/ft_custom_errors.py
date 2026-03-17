@@ -13,15 +13,15 @@ class WaterError(GardenError):
     pass
 
 
-def check_plant():
+def check_plant() -> None:
     raise PlantError("The tomato plant is wilting!")
 
 
-def check_water():
+def check_water() -> None:
     raise WaterError("Not enough water in the tank!")
 
 
-def test_error(func, error_type, text):
+def test_error(func, error_type: type[Exception], text: str) -> None:
     print(text)
     try:
         func()
@@ -30,7 +30,7 @@ def test_error(func, error_type, text):
     print()
 
 
-def test_garden_error(func):
+def test_garden_error(func) -> None:
     try:
         func()
     except GardenError as e:
