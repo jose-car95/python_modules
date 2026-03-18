@@ -6,11 +6,11 @@ import sys
 
 def parse(args: list[str]) -> list[int]:
     list_number: list[int] = []
-    for i in args[1:]:
+    for arg in args[1:]:
         try:
-            list_number.append(int(i))
+            list_number.append(int(arg))
         except ValueError:
-            print(f"Error: Invalid argument '{i}'.")
+            print(f"Error: Invalid argument '{arg}'.")
     return list_number
 
 
