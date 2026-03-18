@@ -13,7 +13,7 @@ class WaterError(GardenError):
     pass
 
 
-class GardenManager():
+class GardenManager:
     def __init__(self) -> None:
         self.plants: list[str | None] = []
 
