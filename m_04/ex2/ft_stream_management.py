@@ -6,10 +6,12 @@ import sys
 def main() -> None:
     print("=== CYBER ARCHIVES - COMMUNICATION SYSTEM ===\n\n")
 
-    print("Input Stream active. Enter archivist ID: ")
+    sys.stdout.write("Input Stream active. Enter archivist ID: ")
+    sys.stdout.flush()
     archivist_id: str = sys.stdin.readline()[:-1]
 
-    print("Input Stream active. Enter status report: ")
+    sys.stdout.write("Input Stream active. Enter status report: ")
+    sys.stdout.flush()
     status_report: str = sys.stdin.readline()[:-1]
 
     sys.stdout.write(
