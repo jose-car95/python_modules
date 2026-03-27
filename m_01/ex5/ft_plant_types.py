@@ -39,7 +39,7 @@ class Tree(Plant):
         return (
             f"{self.name} provides {shade_area} "
             f"square meters of shade"
-            )
+        )
 
     def get_info(self) -> str:
         return (

@@ -7,7 +7,7 @@ class Plant:
         self.height: int = height
         self.age: int = age
 
-    def get_info(self) -> str:
+    def show(self) -> str:
         return f"{self.name}: {self.height}cm, {self.age} days old"
 
 
@@ -18,9 +18,9 @@ def main() -> None:
 
     print("=== Garden Plant Registry ===")
 
-    print(rose.get_info())
-    print(sunflower.get_info())
-    print(cactus.get_info())
+    print(rose.show())
+    print(sunflower.show())
+    print(cactus.show())
 
 
 if __name__ == "__main__":
