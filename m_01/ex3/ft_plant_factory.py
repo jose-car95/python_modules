@@ -4,27 +4,33 @@
 class Plant:
     plants_created: int = 0
 
-    def __init__(self, name: str, height: float, age: int) -> None:
-        self._name: str = name
-        self._height: float = height
-        self._age: int = age
-        Plant.plants_created += 1
+    def __init__(
+        self, name: str, height: float, age: int, growth_rate: float = 1.0
+    ) -> None:
+        self.name: str = name
+        self.height: float = height
+        self.age: int = age
+        self.growth_rate: float = growth_rate
         print(self.get_info())
 
     def get_name(self) -> str:
-        return self._name
+        return self.name
 
     def get_height(self) -> float:
-        return self._height
+        return self.height
 
     def get_age(self) -> int:
-        return self._age
+        return self.age
 
     def get_info(self) -> str:
         return (
-            f"Created: {self._name}: "
-            f"{self._height:.1f}cm, {self._age} days old"
+            f"Created: {self.name}: "
+            f"{self.height:.1f}cm, {self.age} days old"
         )
+
+    def grow(self) -> None:
+        self.height += self.growth_rate
+        self.age += 1
 
 
 if __name__ == "__main__":
@@ -35,5 +41,3 @@ if __name__ == "__main__":
     cactus: Plant = Plant("Cactus", 5.0, 90)
     sunflower: Plant = Plant("Sunflower", 80.0, 45)
     fern: Plant = Plant("Fern", 15.0, 120)
-
-    print("\nTotal plants created:", Plant.plants_created)

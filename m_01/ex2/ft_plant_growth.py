@@ -6,27 +6,27 @@ class Plant:
         self, name: str, height: float, age: int, growth_rate: float = 1.0
     ) -> None:
         self.name: str = name
-        self._height: float = height
-        self._age: int = age
+        self.height: float = height
+        self.age: int = age
         self.growth_rate: float = growth_rate
 
     def get_name(self) -> str:
         return self.name
 
     def get_height(self) -> float:
-        return self._height
+        return self.height
 
     def get_age(self) -> int:
-        return self._age
+        return self.age
 
-    def grow(self) -> None:
-        self._height += self.growth_rate
+    def grow_height(self) -> None:
+        self.height += self.growth_rate
 
-    def age(self) -> None:
-        self._age += 1
+    def grow_age(self) -> None:
+        self.age += 1
 
     def get_info(self) -> str:
-        return f"{self.name}: {self._height:.1f}cm, {self._age} days old"
+        return f"{self.name}: {self.height:.1f}cm, {self.age} days old"
 
 
 def main() -> None:
@@ -37,8 +37,8 @@ def main() -> None:
     for day in range(1, 8):
         print(f"=== Day {day} ===")
         print(rose.get_info())
-        rose.grow()
-        rose.age()
+        rose.grow_height()
+        rose.grow_age()
 
     growth: float = rose.get_height() - initial_height
     print(f"Growth this week: {round(growth)}cm")
