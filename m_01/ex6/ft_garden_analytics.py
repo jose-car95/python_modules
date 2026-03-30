@@ -61,9 +61,8 @@ class Flower(Plant):
         self._color: str = color
         self._is_blooming: bool = False
 
-    def bloom(self) -> str:
+    def bloom(self) -> None:
         self._is_blooming = True
-        return f"{self._name} is blooming beautifully!"
 
     def show(self) -> str:
         base: str = super().show()
@@ -103,9 +102,8 @@ class Seed(Flower):
         super().__init__(name, height, age, color)
         self._seed_count: int = 0
 
-    def bloom(self, seeds: int = 0) -> str:
+    def bloom(self, seeds: int = 0) -> None:
         self._seed_count = seeds
-        return super().bloom()
 
     def show(self) -> str:
         return f"{super().show()}\nSeeds: {self._seed_count}"
