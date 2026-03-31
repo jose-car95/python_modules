@@ -16,30 +16,10 @@ def water_plant(plant_name: str) -> None:
     print(f"Watering {plant_name}: [OK]")
 
 
-def test_watering_system() -> None:
-    print("=== Garden Watering System ===")
-    print()
-
-    valid_plants: list[str] = ["Tomato", "Lettuce", "Carrots"]
-    invalid_plants: list[str] = ["Tomato", "lettuce"]
-
-    print("Testing valid plants...")
-    print("Opening watering system")
-
-    try:
-        for plant in valid_plants:
-            water_plant(plant)
-    except PlantError as e:
-        print(f"Caught PlantError: {e}")
-        print(".. ending tests and returning to main")
-        return
-    finally:
-        close_system()
-    print()
-    print("Testing invalid plants...")
+def test_watering_system(plants: list[str]) -> None:
     print("Opening watering system")
     try:
-        for plant in invalid_plants:
+        for plant in plants:
             water_plant(plant)
     except PlantError as e:
         print(f"Caught PlantError: {e}")
@@ -50,9 +30,15 @@ def test_watering_system() -> None:
 
 
 def main() -> None:
-    test_watering_system()
+    print("=== Garden Watering System ===\n")
+    valid_plants: list[str] = ["Tomato", "Lettuce", "Carrots"]
+    invalid_plants: list[str] = ["Tomato", "lettuce"]
+    print("Testing valid plants...")
+    test_watering_system(valid_plants)
     print()
-    print("Cleanup always happens, even with errors!")
+    print("Testing invalid plants...")
+    test_watering_system(invalid_plants)
+    print("\nCleanup always happens, even with errors!")
 
 
 if __name__ == "__main__":
