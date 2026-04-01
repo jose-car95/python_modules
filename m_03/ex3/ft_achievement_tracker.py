@@ -1,36 +1,50 @@
 #!/usr/bin/env python3
 
+import random
+
+
+def gen_player_achievements() -> set[str]:
+    achievements_pool: list[str] = [
+        "Crafting Genius", "World Savior", "Master Explorer",
+        "Collector Supreme", "Untouchable", "Boss Slayer",
+        "Strategist", "Speed Runner", "Survivor",
+        "Treasure Hunter", "First Steps", "Sharp Mind",
+        "Unstoppable", "Hidden Path Finder"
+    ]
+    num: int = random.randint(3, len(achievements_pool))
+    return set(random.sample(achievements_pool, num))
+
 
 def main() -> None:
     print("=== Achievement Tracker System ===\n")
 
-    alice: set = {"first_kill", "level_10", "treasure_hunter", "speed_demon"}
-    bob: set = {"first_kill", "level_10", "boss_slayer", "collector"}
-    charlie: set = {
-        "level_10", "treasure_hunter",
-        "boss_slayer", "speed_demon", "perfectionist"
+    players: dict[str, set[str]] = {
+        "Alice": gen_player_achievements(),
+        "Bob": gen_player_achievements(),
+        "Charlie": gen_player_achievements(),
+        "Dylan": gen_player_achievements(),
     }
-    print(f"Player alice achievement: {alice}")
-    print(f"Player bob achievement: {bob}")
-    print(f"Player bob achievement: {charlie}")
-    print("\n=== Achievement Analytics ===")
-    union = alice.union(bob, charlie)
-    len_union: int = len(union)
-    print(f"All unique achievements: {union}")
-    print(f"Total unique achievement: {len_union}")
-    common: set = alice.intersection(bob, charlie)
-    print(f"\nCommon to all players: {common}")
-    rare_alice: set = alice.difference(bob.union(charlie))
-    rare_bob: set = bob.difference(charlie.union(alice))
-    rare_charlie: set = charlie.difference(alice.union(bob))
-    rare: set = rare_alice.union(rare_bob, rare_charlie)
-    print(f"Rare achievement (1 player): {rare}\n")
-    alice_vs_bob_common: set = alice.intersection(bob)
-    print(f"Alice vs Bob common: {alice_vs_bob_common}")
-    alice_unique: set = alice.difference(bob)
-    print(f"Alice unique: {alice_unique}")
-    bob_unique: set = bob.difference(alice)
-    print(f"Bob unique: {bob_unique}")
+
+    for name, achievements in players.items():
+        print(f"Player {name}: {achievements}")
+
+    all_achievements: set[str] = set().union(*players.values())
+    print(f"\nAll distinct achievements: {all_achievements}")
+
+    common: set[str] = set.intersection(*players.values())
+    print(f"\nCommon achievements: {common}\n")
+
+    for name, achievements in players.items():
+        others: set[str] = set().union(
+            *(v for k, v in players.items() if k != name)
+        )
+        unique: set[str] = achievements.difference(others)
+        print(f"Only {name} has: {unique}")
+    print()
+
+    for name, achievements in players.items():
+        missing: set[str] = all_achievements.difference(achievements)
+        print(f"{name} is missing: {missing}")
 
 
 if __name__ == "__main__":

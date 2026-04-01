@@ -1,104 +1,76 @@
 #!/usr/bin/env python3
 
-
 import sys
 
 
-def parse_input(args: list[str]) -> dict:
-    inventory: dict = {}
+def parse_input(args: list[str]) -> dict[str, int]:
+    inventory: dict[str, int] = {}
     for arg in args[1:]:
-        name, qty = arg.split(":")
-        inventory[name] = int(qty)
+        if ":" not in arg:
+            print(f"Error - invalid parameter '{arg}'")
+            continue
+        name, qty = arg.split(":", 1)
+        if name in inventory:
+            print(f"Redundant item '{name}' - discarding")
+            continue
+        try:
+            inventory[name] = int(qty)
+        except ValueError as e:
+            print(f"Quantity error for '{name}': {e}")
     return inventory
 
 
-def print_analysis(inventory: dict) -> None:
-    total_items: int = 0
-    for value in inventory.values():
-        total_items += value
-    print("=== Inventory System Analysis ===")
-    print(f"Total items in inventory: {total_items}")
-    print(f"Unique item types: {len(inventory)}\n")
+def retrieve_max(inventory: dict) -> str:
+    max: int = 0
+    key: str = ""
+    for k, v in inventory.items():
+        if v > max:
+            max = v
+            key = k
+    return key
 
 
-def print_inventory(inventory: dict) -> None:
-    total: int = 0
-    for value in inventory.values():
-        total += value
-    print("=== Current Inventory ===")
-
-    for name, qty in sorted(
-            inventory.items(), key=lambda item: item[1], reverse=True
-    ):
-        percent: float = (qty / total) * 100
-        print(f"{name}: {qty} units ({percent:.1f}%)")
-    print()
-
-
-def print_stats(inventory: dict) -> None:
-    max_item: str = ""
-    min_item: str = ""
-    max_qty: int = -1
-    min_qty: int = 999999
-    for name, qty in inventory.items():
-        if qty > max_qty:
-            max_qty = qty
-            max_item = name
-        if qty < min_qty:
-            min_qty = qty
-            min_item = name
-    print("=== Inventory Statistics ===")
-    print(f"Most abundant: {max_item} ({max_qty} units)")
-    print(f"Least abundant: {min_item} ({min_qty} units)\n")
-
-
-def categorize_items(inventory: dict) -> None:
-    categories: dict = {
-        "Moderate": {},
-        "Scarce": {}
-    }
-    for name, qty in inventory.items():
-        if qty >= 5:
-            categories["Moderate"][name] = qty
-        else:
-            categories["Scarce"][name] = qty
-    print("=== Item Categories ===")
-    print(f"Moderate: {categories.get('Moderate')}")
-    print(f"Scarce: {categories.get('Scarce')}\n")
-
-
-def suggest_restock(inventory: dict) -> None:
-    low_item: list = []
-    for name, qty in inventory.items():
-        if qty <= 1:
-            low_item.append(name)
-    result: str = ", ".join(low_item)
-    print("=== Management Suggestions ===")
-    print(f"Restock needed: {result}\n")
-
-
-def dictionary_demo(inventory: dict) -> None:
-    print("=== Dictionary Properties Demo ===")
-    print(f"Dictionary keys: {", ".join(inventory.keys())}")
-    value_list: list = []
-    for v in inventory.values():
-        value_list.append(str(v))
-    print(f"Dictionary values: {", ".join(value_list)}")
-    print(f"Sample lookup - 'sword' in inventory: {'sword' in inventory}")
+def retrieve_min(inventory: dict[str, int]) -> str:
+    min: int = (1 << 63) - 1
+    key: str = ""
+    for k, v in inventory.items():
+        if v < min:
+            min = v
+            key = k
+    return key
 
 
 def main(args: list[str]) -> None:
+    print("=== Inventory System Analysis ===")
+
     if len(args) == 1:
-        print("Error: No inventory data provided.")
-        print("Usage: python3 ft_inventory_system.py item:qty item:qty ...")
+        print(
+            "No inventory provided. Usage: "
+            "python3 ft_inventory_system.py item:qty ..."
+        )
         return
-    inventory: dict = parse_input(args)
-    print_analysis(inventory)
-    print_inventory(inventory)
-    print_stats(inventory)
-    categorize_items(inventory)
-    suggest_restock(inventory)
-    dictionary_demo(inventory)
+    inventory: dict[str, int] = parse_input(args)
+    print(f"Got inventory: {inventory}")
+    item_list: list[str] = list(inventory.keys())
+    print(f"Item list: {item_list}")
+    total: int = sum(inventory.values())
+    print(f"Total quantity of the {len(inventory)} items: {total}")
+    for name, qty in inventory.items():
+        percent: float = (qty / total) * 100
+        print(f"Item {name} represents {round(percent, 1)}%")
+    if inventory:
+        most_item: str = retrieve_max(inventory)
+        least_item: str = retrieve_min(inventory)
+        print(
+            f"Item most abundant: {most_item} "
+            f"with quantity {inventory[most_item]}"
+        )
+        print(
+            f"Item least abundant: {least_item} "
+            f"with quantity {inventory[least_item]}"
+        )
+    inventory.update({"magic_item": 1})
+    print(f"Updated inventory: {inventory}")
 
 
 if __name__ == "__main__":

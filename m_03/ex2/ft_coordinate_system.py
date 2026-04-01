@@ -1,64 +1,55 @@
 #!/usr/bin/env python3
 
-
-import sys
 import math
 
 
 def distance_3d(
-        x1: int, y1: int, z1: int,
-        x2: int, y2: int, z2: int
+        p1: tuple[float, float, float],
+        p2: tuple[float, float, float]
 ) -> float:
-    return math.sqrt(((x2 - x1)**2) + ((y2 - y1)**2) + ((z2 - z1)**2))
-
-
-def parse_coordinates(
-        args: list[str], pos: int
-) -> tuple[int, int, int] | None:
-    try:
-        parts: list[str] = args[pos].split(',')
-        if len(parts) != 3:
-            print(f'\nParsing invalid coordinates: "{args[pos]}"')
-            print("Error parsing coordinates: invalid format")
-            return None
-        return int(parts[0]), int(parts[1]), int(parts[2])
-    except ValueError as e:
-        print(f'\nParsing invalid coordinates: "{args[pos]}"')
-        print(f"Error parsing coordinates: {e}")
-        print(f"Error details - Type: {e.__class__.__name__}, Args: {e.args}")
-
-
-def main(args: list[str]) -> None:
-    print("=== Game Coordinate System ===")
-    position: tuple[int, int, int] = (10, 20, 5)
-    player: tuple[int, int, int] = (0, 0, 0)
-    print(f"\nPosition created: {position}")
-    print(
-        f"Distance between {player} and "
-        f"{position}: {distance_3d(*position, *player):.2f}"
+    return math.sqrt(
+        (p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2 + (p2[2] - p1[2]) ** 2
     )
-    argc: int = len(args)
-    if argc == 3:
-        print(f'\nParsing coordinates: "{args[1]}"')
-        new_position: tuple[int, int, int] | None = parse_coordinates(args, 1)
-        if new_position is None:
-            return
-        print(f"Parsed position: {new_position}")
-        print(
-            f"Distance between {player} and {new_position}: "
-            f"{distance_3d(*new_position, *player):.1f}"
+
+
+def get_player_pos() -> tuple[float, float, float]:
+    while True:
+        user_input: str = input(
+            "Enter new coordinates as floats in format 'x,y,z': "
         )
-        parse_coordinates(args, 2)
-    else:
-        print(
-            "\nError ARGS: Please use the program this way:",
-            'python3 ft_coordinate_system.py "X1,Y1,Z1" "X2,Y2,Z2"'
-        )
-    position: tuple[int, int, int] = (3, 4, 0)
-    print("\nUnpacking demonstration:")
-    print("Player at: x=%d, y=%d, z=%d" % position)
-    print("Coordinates: X=%d, Y=%d, Z=%d" % position)
+        parts: list[str] = user_input.split(',')
+        if len(parts) != 3:
+            print("Invalid syntax")
+            continue
+        try:
+            x: float = float(parts[0].strip())
+            y: float = float(parts[1].strip())
+            z: float = float(parts[2].strip())
+            return (x, y, z)
+        except ValueError as e:
+            invalid_value: str = str(e).split("'")[1]
+            print(f"Error on parameter '{invalid_value}': {e}")
+
+
+def main() -> None:
+    print("=== Game Coordinate System ===")
+
+    print("Get a first set of coordinates")
+    pos1: tuple[float, float, float] = get_player_pos()
+    print(f"Got a first tuple: {pos1}")
+    print(f"It includes: X={pos1[0]}, Y={pos1[1]}, Z={pos1[2]}")
+    origin: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    dist_center: float = distance_3d(pos1, origin)
+    print(f"Distance to center: {round(dist_center, 4)}\n")
+
+    print("Get a second set of coordinates")
+    pos2: tuple[float, float, float] = get_player_pos()
+    dist_between: float = distance_3d(pos1, pos2)
+    print(
+        "Distance between the 2 sets of coordinates: "
+        f"{round(dist_between, 4)}"
+    )
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()

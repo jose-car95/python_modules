@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-
-
 import sys
 
 
-def get_argv(args: list[str]) -> None:
+def main(args: list[str]) -> None:
     print("=== Command Quest ===")
+    print(f"Program name: {args[0]}")
     argc: int = len(args)
     if argc == 1:
         print("No arguments provided!")
-    print(f"Program name: {args[0]}")
     if argc > 1:
         print(f"Arguments received: {argc - 1}")
         i: int = 1
@@ -20,4 +18,4 @@ def get_argv(args: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    get_argv(sys.argv)
+    main(sys.argv)
