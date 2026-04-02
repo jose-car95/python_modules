@@ -1,22 +1,16 @@
-#!/usr/bin/env python3
-
-
 def crisis_handler(filename: str, restricted: bool = False) -> None:
-    if restricted:
-        print(f"CRISIS ALERT: Attempting access to '{filename}'...")
-    elif filename == "standard_archive.txt":
+    if filename == "standard_archive.txt":
         print(f"ROUTINE ACCESS: Attempting access to '{filename}'...")
     else:
         print(f"CRISIS ALERT: Attempting access to '{filename}'...")
 
     try:
         if restricted:
-            raise PermissionError("Restricted vault access")
+            raise PermissionError
+        with open(filename, "r") as file:
+            data: str = file.read()
 
-        with open(filename, "r") as archive_file:
-            content: str = archive_file.read().strip()
-
-        print(f"SUCCESS: Archive recovered - ``{content}''")
+        print(f"SUCCESS: Archive recovered - ``{data}''")
         print("STATUS: Normal operations resumed")
 
     except FileNotFoundError:
@@ -30,9 +24,7 @@ def crisis_handler(filename: str, restricted: bool = False) -> None:
     except Exception:
         print("RESPONSE: Unexpected system anomaly detected")
         print("STATUS: Crisis handled, system stabilized")
-
     print()
-
 
 def main() -> None:
     print("=== CYBER ARCHIVES - CRISIS RESPONSE SYSTEM ===\n")
