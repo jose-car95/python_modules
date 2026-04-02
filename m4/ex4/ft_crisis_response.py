@@ -26,6 +26,7 @@ def crisis_handler(filename: str, restricted: bool = False) -> None:
         print("STATUS: Crisis handled, system stabilized")
     print()
 
+
 def main() -> None:
     print("=== CYBER ARCHIVES - CRISIS RESPONSE SYSTEM ===\n")
 
