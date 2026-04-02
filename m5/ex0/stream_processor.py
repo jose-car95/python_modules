@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -14,17 +12,14 @@ class DataProcessor(ABC):
         pass
 
     def format_output(self, result: str) -> str:
-        """
-        Default formatter that subclasses can override or reuse via super().
-        """
         return result
 
 
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
-        if not isinstance(data, list):
-            return False
-        return all(isinstance(x, (int, float)) for x in data)
+        return isinstance(data, list) and all(
+            isinstance(x, (int, float)) for x in data
+        )
 
     def process(self, data: Any) -> str:
         if not self.validate(data):
@@ -39,15 +34,15 @@ class NumericProcessor(DataProcessor):
         total_display: str = (
             str(int(total)) if float(total).is_integer() else str(total)
         )
-        avg_display: str = (
-            f"{avg:.1f}"
-        )
-
+        avg_display: str = f"{avg:.1f}"
         result: str = (
-           f"Processed {count} numeric values, "
-           f"sum={total_display}, avg={avg_display}"
+            f"Processed {count} numeric values, "
+            f"sum={total_display}, avg={avg_display}"
         )
         return result
+
+    def format_output(self, result: str) -> str:
+        return super().format_output(result)
 
 
 class TextProcessor(DataProcessor):
@@ -66,6 +61,9 @@ class TextProcessor(DataProcessor):
         )
         return result
 
+    def format_output(self, result: str) -> str:
+        return super().format_output(result)
+
 
 class LogProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
@@ -78,8 +76,6 @@ class LogProcessor(DataProcessor):
             )
 
         entry: str = data
-        level_raw: str
-        message: str
         level_raw, _, message = entry.partition(":")
         level: str = level_raw.strip().upper()
         message_text: str = message.strip()
@@ -92,24 +88,27 @@ class LogProcessor(DataProcessor):
             result = f"[INFO] {level} level detected: {message_text}"
         return result
 
+    def format_output(self, result: str) -> str:
+        return super().format_output(result)
+
 
 def main() -> None:
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
 
-    numeric: DataProcessor = NumericProcessor()
-    text: DataProcessor = TextProcessor()
-    log: DataProcessor = LogProcessor()
+    numeric: NumericProcessor = NumericProcessor()
+    text: TextProcessor = TextProcessor()
+    log: LogProcessor = LogProcessor()
 
     examples: list[Any] = [
         [1, 2, 3, 4, 5],
         "Hello Nexus World",
-        "ERROR: Connection timeout",
+        "ERROR: Connection timeout"
     ]
 
     processors_named: list[tuple[str, DataProcessor, Any]] = [
         ("Numeric Processor", numeric, examples[0]),
         ("Text Processor", text, examples[1]),
-        ("Log Processor", log, examples[2]),
+        ("Log Processor", log, examples[2])
     ]
 
     for title, proc, data in processors_named:
@@ -120,17 +119,9 @@ def main() -> None:
             print(f"Processing data: {data}")
 
         try:
-            valid: bool = proc.validate(data)
-            if not valid:
+            if not proc.validate(data):
                 raise ValueError("validation failed")
-
-            if isinstance(proc, NumericProcessor):
-                print("Validation: Numeric data verified")
-            elif isinstance(proc, TextProcessor):
-                print("Validation: Text data verified")
-            elif isinstance(proc, LogProcessor):
-                print("Validation: Log entry verified")
-
+            print("Validation: Data verified")
             result_raw: str = proc.process(data)
             formatted: str = proc.format_output(result_raw)
             print(f"Output: {formatted}\n")
@@ -145,7 +136,7 @@ def main() -> None:
     demo_data: list[Any] = [
         [1, 2, 3],
         "Hello Nexus",
-        "INFO: System ready",
+        "INFO: System ready"
     ]
 
     for idx, (proc, d) in enumerate(zip(demo_processors, demo_data), start=1):
