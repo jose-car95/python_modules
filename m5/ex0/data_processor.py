@@ -119,7 +119,7 @@ def main() -> None:
     numeric.ingest([1, 2, 3, 4, 5])
     print(" Extracting 3 values...")
     for i in range(3):
-        _, value = numeric.output()[1]
+        _, value = numeric.output()
         print(f" Numeric value {i}: {value}")
 
     print("\nTesting Text Processor...")
@@ -139,7 +139,7 @@ def main() -> None:
     log.ingest(logs)
     print(" Extracting 2 values")
     for i in range(2):
-        _, value = log.output()[1]
+        _, value = log.output()
         print(f" Log entry {i}: {value}")
 
 
