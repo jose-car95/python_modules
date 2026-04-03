@@ -100,35 +100,48 @@ class LogProcessor(DataProcessor):
                 self._data.append(log_entry)
 
 
-class DataStream:
-    def register_processor(self, proc: DataProcessor) -> None:
-        """
-        Añade un procesador a la lista interna.
-        """
-        pass
-
-    def process_stream(self, stream: list[Any]) -> None:
-        """
-        Recorre cada elemento del stream y busca un procesador que lo acepte.
-        Si lo encuentra:
-            llama a ingest.
-        Si no lo encuentra:
-            imprime un mensaje de error.
-        """
-        pass
-
-    def print_processors_stats(self) -> None:
-        """
-        Muestra estadisticas de cada procesador.
-        """
-        pass
-
-    def output(self) -> None:
-        """
-        Tiene que permitir consumir datos
-        """
-        pass
-    
-    
 def main() -> None:
-    print("=== Code Nexus - Data Stream ===\n")
+    print("=== Code Nexus - Data Processor ===\n")
+
+    numeric: NumericProcessor = NumericProcessor()
+    text: TextProcessor = TextProcessor()
+    log: LogProcessor = LogProcessor()
+
+    print("Testing Numeric Processor...")
+    print(f" Trying to validate input '42': {numeric.validate(42)}")
+    print(f" Trying to validate input 'Hello': {numeric.validate('Hello')}")
+    print(" Test invalid ingestion of string 'foo' without prior validation:")
+    try:
+        numeric.ingest("foo")  # type: ignore[arg-type]
+    except Exception as e:
+        print(f" Got exception: {e}")
+    print(" Processing data: [1, 2, 3, 4, 5]")
+    numeric.ingest([1, 2, 3, 4, 5])
+    print(" Extracting 3 values...")
+    for i in range(3):
+        value = numeric.output()[1]
+        print(f" Numeric value {i}: {value}")
+
+    print("\nTesting Text Processor...")
+    print(f" Trying to validate input '42': {text.validate(42)}")
+    print(" Processing data: ['Hello', 'Nexus', 'World']")
+    text.ingest(['Hello', 'Nexus', 'World'])
+    print(" Extracting 1 value...")
+    print(f" Text value 0: {text.output()[1]}")
+
+    print("\nTesting Log Processor...")
+    print(f" Trying to validate input 'Hello': {log.validate('Hello')}")
+    logs = [
+        {"log_level": "NOTICE", "log_message": "Connection to server"},
+        {"log_level": "ERROR", "log_message": "Unauthorized access!!"}
+    ]
+    print(f" Processing data: {logs}")
+    log.ingest(logs)
+    print(" Extracting 2 values")
+    for i in range(2):
+        value = log.output()[1]
+        print(f" Log entry {i}: {value}")
+
+
+if __name__ == "__main__":
+    main()
