@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from ex0 import FlameFactory, AquaFactory
 from ex0.CreatureCard import CreatureFactory, Creature
 
