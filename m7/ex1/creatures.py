@@ -1,10 +1,9 @@
 from .capabilities import HealCapability, TransformCapability
 from ex0.CreatureCard import Creature
 
-# =====================================
-# heredan de Creature y HealCapability
-# ================================================
+
 class Sproutling(Creature, HealCapability):
+    """Base Grass creature with healing capability."""
     def __init__(self) -> None:
         super().__init__(name="Sproutling", type_creature="Grass")
 
@@ -16,6 +15,7 @@ class Sproutling(Creature, HealCapability):
 
 
 class Bloomelle(Creature, HealCapability):
+    """Evolved Grass/Fairy creature with stronger healing capability."""
     def __init__(self) -> None:
         super().__init__(name="Bloomelle", type_creature="Grass/Fairy")
 
@@ -24,13 +24,10 @@ class Bloomelle(Creature, HealCapability):
 
     def heal(self) -> str:
         return f"{self.name} heals itself and others for a large amount"
-        
 
-# ===================================================
-# heredan de Creature y TransformCapability
-# attack cambia según is_transformed
-# =====================================================
+
 class Shiftling(Creature, TransformCapability):
+    """Base Normal creature that changes attack behavior while transformed."""
     def __init__(self) -> None:
         super().__init__(name="Shiftling", type_creature="Normal")
         self.is_transformed: bool = False
@@ -50,6 +47,7 @@ class Shiftling(Creature, TransformCapability):
 
 
 class Morphagon(Creature, TransformCapability):
+    """Evolved Normal/Dragon creature with transform-base attack flow."""
     def __init__(self) -> None:
         super().__init__(name="Morphagon", type_creature="Normal/Dragon")
         self.is_transformed: bool = False

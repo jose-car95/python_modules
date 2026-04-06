@@ -5,6 +5,7 @@ from ex1.capabilities import HealCapability, TransformCapability
 
 
 def test_healing_factory(factory: HealingCreatureFactory) -> None:
+    """Demostrate describe/attack/heal flow for healing creatures."""
     print("Testing Creature with healing capability")
 
     base: Creature = factory.create_base()
@@ -23,6 +24,7 @@ def test_healing_factory(factory: HealingCreatureFactory) -> None:
 
 
 def test_transform_factory(factory: TransformCreatureFactory) -> None:
+    """Demostrate normal and transformed attack flow for transform creatures."""
     print("Testing Creature with transform capability")
 
     base: Creature = factory.create_base()

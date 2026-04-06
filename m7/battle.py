@@ -4,6 +4,10 @@ from ex0.CreatureCard import CreatureFactory, Creature
 
 
 def test_factory(factory: CreatureFactory) -> None:
+    """
+    Validate that a factory creates both base and evolved creatures.
+    For each created creature, print its description and attack action.
+    """
     print("Testing factory")
 
     base: Creature = factory.create_base()
@@ -16,6 +20,7 @@ def test_factory(factory: CreatureFactory) -> None:
 
 
 def test_battle(factory1: CreatureFactory, factory2: CreatureFactory) -> None:
+    """Run a simple base-vs-base battle between two creature families."""
     print("Testing battle")
 
     creature1: Creature = factory1.create_base()

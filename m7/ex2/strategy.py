@@ -1,45 +1,82 @@
 from abc import ABC, abstractmethod
 from ex0.CreatureCard import Creature
 from ex1.capabilities import TransformCapability, HealCapability
+from typing import Protocol, cast
+from ex2.exceptions import InvalidStrategyCreatureError
 
 
 class BattleStrategy(ABC):
-    def is_valid(self) -> bool:
-        """Esta criatura es complatible con esta estrategia?"""
+    """Abstract strategy interface used by the tournament system."""
+    @abstractmethod
+    def is_valid(self, creature: Creature) -> bool:
+        """Validate."""
         pass
 
-    def act(self, creature) -> str:
-        """Que hace en combate?"""
+    @abstractmethod
+    def act(self, creature: Creature) -> str:
+        """Action in combat."""
         pass
 
 
-class NormalStrategy(BattleStrategy, Creature):
-    """Compatible con cualquier criatura"""
-    def is_valid() -> bool:
+class TransformBattler(Protocol):
+    """Structural type for objects that can attack, transform, and revert."""
+    def attack(self) -> str: ...
+    def transform(self) -> str: ...
+    def revert(self) -> str: ...
+
+
+class HealBattler(Protocol):
+    """Structural type for objects that can attack and heal."""
+    def attack(self) -> str: ...
+    def heal(self) -> str: ...
+
+
+# ===================================
+# Diferents Strategies
+# ===============================================
+class NormalStrategy(BattleStrategy):
+    """Default strategy: perform only a direct attack."""
+    def is_valid(self, creature: Creature) -> bool:
         return True
 
-    def act(self, creature) -> str:
+    def act(self, creature: Creature) -> str:
         """transform -> attack -> revert"""
-        pass
+        return creature.attack()
 
 
-class AggressiveStrategy(BattleStrategy, TransformCapability):
-    """Compatible con TransformCapability"""
-    def is_valid(self):
+class AggressiveStrategy(BattleStrategy):
+    """Transform-focused strategy: transform, attack, then revert."""
+    def is_valid(self, creature: Creature) -> bool:
         """true si la criatura tiene transform/revert"""
-        pass
+        return isinstance(creature, TransformCapability)
 
-    def act(self, creature) -> str:
+    def act(self, creature: Creature) -> str:
         """transform -> attack -> revert"""
-        pass
+        if not self.is_valid(creature):
+            raise InvalidStrategyCreatureError(
+                f"Invalid Creature '{creature.name}' "
+                f"for this aggressive strategy"
+            )
+        transformer: TransformBattler = cast(TransformBattler, creature)
+        return (
+            f"{transformer.transform()}\n"
+            f"{transformer.attack()}\n"
+            f"{transformer.revert()}"
+        )
 
 
-class DefensiveStrategy(BattleStrategy, HealCapability):
-    """compatible con HealCapability"""
-    def is_valid(self):
+class DefensiveStrategy(BattleStrategy):
+    """Heal-focused strategy: attack first, then heal."""
+    def is_valid(self, creature: Creature) -> bool:
         """true si la criatura tiene heal"""
-        pass
+        return isinstance(creature, HealCapability)
 
-    def act(self, creature) -> str:
+    def act(self, creature: Creature) -> str:
         """attack -> heal"""
-        pass
+        if not self.is_valid(creature):
+            raise InvalidStrategyCreatureError(
+                f"Invalid Creature '{creature.name}' "
+                f"for this defensive strategy"
+            )
+        healer: HealBattler = cast(HealBattler, creature)
+        return f"{healer.attack()}\n{healer.heal()}"
