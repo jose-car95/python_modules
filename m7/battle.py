@@ -33,6 +33,7 @@ def test_battle(factory1: CreatureFactory, factory2: CreatureFactory) -> None:
     print(creature1.attack())
     print(creature2.attack())
 
+
 def main() -> None:
     flame_factory: FlameFactory = FlameFactory()
     aqua_factory: AquaFactory = AquaFactory()

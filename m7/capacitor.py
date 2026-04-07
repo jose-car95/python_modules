@@ -24,7 +24,9 @@ def test_healing_factory(factory: HealingCreatureFactory) -> None:
 
 
 def test_transform_factory(factory: TransformCreatureFactory) -> None:
-    """Demostrate normal and transformed attack flow for transform creatures."""
+    """
+    Demostrate normal and transformed attack flow for transform creatures.
+    """
     print("Testing Creature with transform capability")
 
     base: Creature = factory.create_base()

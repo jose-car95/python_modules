@@ -14,7 +14,7 @@ class Creature(ABC):
     @abstractmethod
     def attack(self) -> str:
         """Return the creature's attack action message."""
-        pass
+        ...
 
     def describe(self) -> str:
         """Return a generic description of this creature."""
@@ -26,12 +26,12 @@ class CreatureFactory(ABC):
     @abstractmethod
     def create_base(self) -> Creature:
         """Create and return the base creature of a family."""
-        pass
+        ...
 
     @abstractmethod
     def create_evolved(self) -> Creature:
         """Create and return the evolved creature of a family."""
-        pass
+        ...
 
 
 # =============================================

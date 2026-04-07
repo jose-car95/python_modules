@@ -10,25 +10,33 @@ class BattleStrategy(ABC):
     @abstractmethod
     def is_valid(self, creature: Creature) -> bool:
         """Validate."""
-        pass
+        ...
 
     @abstractmethod
     def act(self, creature: Creature) -> str:
         """Action in combat."""
-        pass
+        ...
 
 
 class TransformBattler(Protocol):
     """Structural type for objects that can attack, transform, and revert."""
-    def attack(self) -> str: ...
-    def transform(self) -> str: ...
-    def revert(self) -> str: ...
+    def attack(self) -> str:
+        ...
+
+    def transform(self) -> str:
+        ...
+
+    def revert(self) -> str:
+        ...
 
 
 class HealBattler(Protocol):
     """Structural type for objects that can attack and heal."""
-    def attack(self) -> str: ...
-    def heal(self) -> str: ...
+    def attack(self) -> str:
+        ...
+
+    def heal(self) -> str:
+        ...
 
 
 # ===================================

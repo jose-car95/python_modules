@@ -5,7 +5,7 @@ class HealCapability(ABC):
     """Capability contract for creatures that can perform healing actions."""
     @abstractmethod
     def heal(self) -> str:
-        pass
+        ...
 
 
 class TransformCapability(ABC):
@@ -13,9 +13,9 @@ class TransformCapability(ABC):
     @abstractmethod
     def transform(self) -> str:
         """Apply transformed state and return the transform message."""
-        pass
+        ...
 
     @abstractmethod
     def revert(self) -> str:
         """Return to normal state and return the revert message."""
-        pass
+        ...
