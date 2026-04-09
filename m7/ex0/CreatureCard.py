@@ -34,8 +34,6 @@ class CreatureFactory(ABC):
         ...
 
 
-# =============================================
-
 class FlameFactory(CreatureFactory):
     """Concrete factory for Fire-family creatures."""
     def create_base(self) -> Creature:
