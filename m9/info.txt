@@ -1,0 +1,20 @@
+data_generator.py -> Generate realistic test data for all exercises
+data_exporter.py -> Export data in JSON, CSV and Python format
+generate_data/ -> Pre-generated datasets ready to use
+
+
+BaseModel:
+    The foundation of all Pydantic models. Inherit from BaseModel to create
+    validated data classes.
+
+Field:
+    Use Field(...) to add validation constraints, descriptions, and default
+    values to model attributes.
+
+model_validator:
+    Use the @model_validator(mode='after') decorator for custom validation
+    logic that runs after Pydantic's build-in validation.
+    This replaces the deprecated @validator decorator from Pydantic v1.
+
+
+ex0/space_station.py -> Functions Authorized: None
