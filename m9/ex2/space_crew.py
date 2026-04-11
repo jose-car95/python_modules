@@ -28,14 +28,14 @@ class SpaceMission(BaseModel):
     destination: str = Field(min_length=3, max_length=50)
     launch_date: datetime
     duration_days: int = Field(ge=1, le=3650)
-    crew: list[CrewMember] = Field(ge=1, le=12)  # De 1 a 12 miembros(crew)
+    crew: list[CrewMember] = Field(min_length=1, max_length=12)
     mission_status: str = "planned"
     budget_millions: float = Field(ge=1.0, le=10000.0)
 
     @model_validator(mode="after")
     def validate_mission_rules(self) -> Self:
         if not self.mission_id.startswith("M"):
-            raise ValueError('Mission ID must strat with "M"')
+            raise ValueError('Mission ID must start with "M"')
 
         has_leader: bool = any(
             member.rank in (Rank.COMMANDER, Rank.CAPTAIN)
@@ -63,8 +63,104 @@ class SpaceMission(BaseModel):
         return self
 
 
+def show_mission_info(mission: SpaceMission) -> None:
+    print(f"Mission: {mission.mission_name}")
+    print(f"ID: {mission.mission_id}")
+    print(f"Destination: {mission.destination}")
+    print(f"Duration: {mission.duration_days} days")
+    print(f"Budget: ${mission.budget_millions}M")
+    print(f"Crew size: {len(mission.crew)}")
+    print("Crew members:")
+    for member in mission.crew:
+        print(
+            f"- {member.name} ({member.rank.value}) - "
+            f"{member.specialization}"
+        )
+
+
 def main() -> None:
-    pass
+    print("Space Mission Crew Validation")
+    print("=" * 41)
+    print("Valid mission created:")
+
+    valid_mission: SpaceMission = SpaceMission(
+        mission_id="M2024_MARS",
+        mission_name="Mars Colony Establishment",
+        destination="Mars",
+        launch_date=datetime(2024, 8, 1, 9, 0),
+        duration_days=900,
+        crew=[
+            CrewMember(
+                member_id="CM001",
+                name="Sarah Connor",
+                rank=Rank.COMMANDER,
+                age=42,
+                specialization="Mission Command",
+                years_experience=15,
+                is_active=True
+            ),
+            CrewMember(
+                member_id="CM002",
+                name="John Smith",
+                rank=Rank.LIEUTENANT,
+                age=35,
+                specialization="Navigation",
+                years_experience=8,
+                is_active=True
+            ),
+            CrewMember(
+                member_id="CM003",
+                name="Alice Johnson",
+                rank=Rank.OFFICER,
+                age=29,
+                specialization="Engineering",
+                years_experience=6,
+                is_active=True
+            )
+        ],
+        mission_status="planned",
+        budget_millions=2500.0
+    )
+
+    show_mission_info(valid_mission)
+
+    print()
+    print("=" * 41)
+    print("Expected validation error:")
+    try:
+        invalid_mission: SpaceMission = SpaceMission(
+            mission_id="M2024_EUROPA",
+            mission_name="Europa Research Mission",
+            destination="Europa",
+            launch_date=datetime(2024, 9, 1, 10, 0),
+            duration_days=180,
+            crew=[
+                CrewMember(
+                    member_id="CM004",
+                    name="Tom Harris",
+                    rank=Rank.OFFICER,
+                    age=30,
+                    specialization="Science",
+                    years_experience=4,
+                    is_active=True
+                ),
+                CrewMember(
+                    member_id="CM005",
+                    name="Emma Davis",
+                    rank=Rank.LIEUTENANT,
+                    age=33,
+                    specialization="Medical",
+                    years_experience=7,
+                    is_active=True
+                )
+            ],
+            mission_status="planned",
+            budget_millions=1800.0
+        )
+
+        show_mission_info(invalid_mission)
+    except ValidationError as e:
+        print(e.errors()[0]["ctx"]["error"])
 
 
 if __name__ == "__main__":
