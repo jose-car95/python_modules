@@ -67,13 +67,22 @@ def power_validator(min_power: int) -> Callable:
         def wrapper(*args, **kwargs):
             if "power" in kwargs:
                 power = kwargs["power"]
-            else:
+            elif len(args) >= 1 and isinstance(args[0], int):
+                power = args[0]
+            elif len(args) >= 3 and isinstance(args[2], int):
                 power = args[2]
+            else:
+                return "Insufficient power for this spell"
             if power < min_power:
                 return "Insufficient power for this spell"
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+@power_validator(10)
+def channel_spell(power: int, spell_name: str) -> str:
+    return f"{spell_name} cast with {power} power"
 
 
 class MageGuild:
@@ -103,12 +112,18 @@ def main() -> None:
     print(unstable_success())
 
     print("\nTesting MageGuild...")
-    print(MageGuild.validate_mage_name("Gandlf"))
+    print(MageGuild.validate_mage_name("Gandalf"))
     print(MageGuild.validate_mage_name("A1"))
 
     guild: MageGuild = MageGuild()
     print(guild.cast_spell("Lightning", 15))
     print(guild.cast_spell("Lightning", 5))
+
+    print("\nTesting power validator with standalone function...")
+    print(channel_spell(12, "Lightning"))
+    print(channel_spell(5, "Lightning"))
+    print(channel_spell(power=20, spell_name="Frost Nova"))
+    print(channel_spell(power=3, spell_name="Frost Nova"))
 
 
 if __name__ == "__main__":
