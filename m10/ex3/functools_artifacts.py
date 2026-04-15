@@ -4,17 +4,6 @@ from operator import add, mul
 from typing import Any
 
 
-"""
-reduce:
-    Combina todos los elementos de una secuencia en un único valor
-    aplicando una función acumulativa.
-operator.add y operator.mul:
-    Funciones ya preparadas para suma y multiplicación,
-    y encajan muy bien con 'reduce'.
-
-"""
-
-
 def spell_reducer(spells: list[int], operation: str) -> int:
     if not spells:
         return 0
@@ -33,34 +22,44 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    """Fijar algunos argumentos de una función para crear variantes más especializadas"""
-    """
-        partial:
-            sirve para fijar algunos argumentos de una funcion por adelantado
-    """
-    pass
+    return {
+        "fire": partial(base_enchantment, 50, "Fire"),
+        "ice": partial(base_enchantment, 50, "Ice"),
+        "lightning": partial(base_enchantment, 50, "Lightning")
+    }
 
 
+def enchant(power: int, element: str, target: str) -> str:
+    return f"{element} enchantment with {power} power on {target}"
+
+
+@lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
-    """Enseña memoización con lru_cache"""
-    """
-        lru_cache:
-            @lru_cache:
-                introduce memoizacion
-                Memoizar:
-                    Guardar el resultado de una llamada para no recalcularlo si vuelves a pedir lo mismo.
-    """
-    pass
+    if n < 0:
+        raise ValueError("n must be non-negative")
+    if n < 2:
+        return n
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
-    """Enseña despacho por tipo con singledispath"""
-    """
-        singledispath:
-            te deja crear una funcion genérica cuyo comportamiento cambia
-            según el tipo de argumento
-    """
-    pass
+    @singledispatch
+    def dispatch_spell(value: Any) -> str:
+        return "Unknown spell type"
+
+    @dispatch_spell.register
+    def _(value: int) -> str:
+        return f"Damage spell: {value} damage"
+
+    @dispatch_spell.register
+    def _(value: str) -> str:
+        return f"Enchantment: {value}"
+
+    @dispatch_spell.register
+    def _(value: list) -> str:
+        return f"Multi-cast: {len(value)} spells"
+
+    return dispatch_spell
 
 
 def main() -> None:
@@ -74,6 +73,26 @@ def main() -> None:
         print(spell_reducer([1, 2, 3], 'unknown'))
     except ValueError as error:
         print(error)
+
+    print("\nTesting partial enchanter")
+    enchanted = partial_enchanter(enchant)
+    print(enchanted["fire"]("Sword"))
+    print(enchanted["ice"]("Shield"))
+    print(enchanted["lightning"]("Staff"))
+
+    print("\nTesting memoized fibonacci...")
+    print(f"Fib(0): {memoized_fibonacci(0)}")
+    print(f"Fib(1): {memoized_fibonacci(1)}")
+    print(f"Fib(10): {memoized_fibonacci(10)}")
+    print(f"Fib(15): {memoized_fibonacci(15)}")
+    print(memoized_fibonacci.cache_info())
+
+    print("\nTesting spell dispatcher...")
+    disparcher = spell_dispatcher()
+    print(disparcher(42))
+    print(disparcher("fireball"))
+    print(disparcher(["fireball", "heal", "shield"]))
+    print(disparcher(3.14))
 
 
 if __name__ == "__main__":
