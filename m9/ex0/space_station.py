@@ -6,7 +6,7 @@ class SpaceStation(BaseModel):
 
     station_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=1, max_length=50)
-    crew_size: int = Field(ge=1, le=20)  # ge=greater or equal le=less or equal
+    crew_size: int = Field(ge=1, le=20)
     power_level: float = Field(ge=0.0, le=100.0)
     oxygen_level: float = Field(ge=0.0, le=100.0)
     last_maintenance: datetime
@@ -28,8 +28,9 @@ class SpaceStation(BaseModel):
 
 def main() -> None:
     print("Space Station Data Validation")
-
     try:
+        print("=" * 40)
+        print("Valid station created:")
         valid_station: SpaceStation = SpaceStation(
             station_id="ISS001",
             name="International Space Station",
@@ -40,8 +41,6 @@ def main() -> None:
             is_operational=True,
             notes="All systems nominal"
         )
-        print("=" * 40)
-        print("Valid station created:")
         valid_station.show_info()
 
         print("=" * 40)
@@ -58,7 +57,7 @@ def main() -> None:
         )
         invalid_station.show_info()
     except ValidationError as e:
-        print(e.errors()[0]["msg"])
+        print(e.errors()[0]['msg'])
 
 
 if __name__ == "__main__":

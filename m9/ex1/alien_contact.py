@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, Field, ValidationError, model_validator
-from typing import Self, Optional
 
 
 class ContactType(str, Enum):
@@ -19,11 +18,11 @@ class AlienContact(BaseModel):
     signal_strength: float = Field(ge=0.0, le=10.0)
     duration_minutes: int = Field(ge=1, le=1440)
     witness_count: int = Field(ge=1, le=100)
-    message_received: Optional[str] = Field(default=None, max_length=500)
+    message_received: str | None = Field(default=None, max_length=500)
     is_verified: bool = False
 
     @model_validator(mode="after")
-    def validate_business_rules(self) -> Self:
+    def validate_business_rules(self) -> "AlienContact":
         if not self.contact_id.startswith("AC"):
             raise ValueError('Contact ID must start with "AC"')
 
@@ -53,10 +52,9 @@ class AlienContact(BaseModel):
 
 def main() -> None:
     print("Alien Contact Log Validation")
-    print("=" * 38)
-    print("Valid contact report:")
-
     try:
+        print("=" * 38)
+        print("Valid contact report:")
         valid_contact: AlienContact = AlienContact(
             contact_id="AC_2024_001",
             timestamp=datetime(2024, 7, 15, 21, 30),
@@ -86,7 +84,7 @@ def main() -> None:
         )
         invalid_contact.show_info()
     except ValidationError as e:
-        print(e.errors()[0]["ctx"]["error"])
+        print(e.errors()[0]['msg'])
 
 
 if __name__ == "__main__":
